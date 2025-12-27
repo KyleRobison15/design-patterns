@@ -1,65 +1,36 @@
 package iterator;
 
-public class BrowseHistory {
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Concrete Aggregate
+ * Contains the collection that will be iterated over
+ * This is the only place where the underlying representation of the collection is exposed.
+ * As a result, if we decide to change from a List to something else, this is the only place we need to update our code
+ * Any changes here will not break the client's ability to traverse the collection using the iterator!
+ *
+ * Implements the Aggregate interface to define a createIterator() method for returning the proper Concrete Iterator
+ *
+ */
+public class BrowseHistory implements Aggregate<String> {
 
-    private String[] urls = new String[10];
-    private int count;
+    private List<String> urls = new ArrayList<>();
 
     public void push(String url) {
-        urls[count] = url;
-        count++;
+        urls.add(url);
     }
 
-    public String pop() {
-        count--;
-        return urls[count];
+    public String pop(){
+        var lastIndex = urls.size() - 1;
+        var lastUrl = urls.get(lastIndex);
+        urls.remove(lastIndex);
+        return lastUrl;
     }
 
-    public Iterator createIterator(){
-        return new ArrayIterator(this);
-    }
-
-    /*
-    * Concrete implementation of the Iterator interface
-    * This implementation is for iterating over Fixed Arrays of urls in the BrowseHistory
-    *
-    * We create this as an inner class because:
-    *   1. The ListIterator is part of the BrowseHistory implementation
-    *   2. It gives us access to the members of the BrowseHistory class even though they are private
-    *
-    * A key benefit of using this pattern is that if we wanted to change the type of collection for the URLs in this browse history class
-    * the only breaking changes will be here in the BrowseHistory class. The main method will not be broken since it has been programmed to the Iterator interface.
-    *
-    * For example, changing the urls collection to an ArrayList<String> instead of a String[] will not cause breaking changes outside of this class!
-    * If we did not use the Iterator pattern, we would have to find everywhere in our application where we are iterating over the BrowseHistory and change it.
-    *
-    * */
-    public class ArrayIterator implements Iterator<String> {
-
-        private BrowseHistory history;
-        private int index;
-
-        public ArrayIterator(BrowseHistory history) {
-            this.history = history;
-        }
-
-        @Override
-        public boolean hasNext() {
-            // If the current index is less than the total number of indexes in the list we're iterating over -> we have more items to visit
-            // We have access to the urls property of the BrowseHistory class because we created this ListIterator as an inner class of the BrowseHistory class
-            return (index < history.count);
-        }
-
-        @Override
-        public String current() {
-            return history.urls[index];
-        }
-
-        @Override
-        public void next() {
-            index++;
-        }
+    @Override
+    public Iterator<String> createIterator() {
+        return new BrowseHistoryIterator(urls);
     }
 
 }
