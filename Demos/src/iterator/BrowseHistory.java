@@ -1,41 +1,46 @@
 package iterator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class BrowseHistory {
 
-    private List<String> urls = new ArrayList<>();
+
+    private String[] urls = new String[10];
+    private int count;
 
     public void push(String url) {
-        urls.add(url);
+        urls[count] = url;
+        count++;
     }
 
     public String pop() {
-        var lastIndex = urls.size() - 1;
-        var lastUrl = urls.get(lastIndex);
-        urls.remove(lastUrl);
-        return lastUrl;
+        count--;
+        return urls[count];
     }
 
     public Iterator createIterator(){
-        return new ListIterator(this);
+        return new ArrayIterator(this);
     }
 
     /*
     * Concrete implementation of the Iterator interface
-    * This implementation is for iterating over Lists
+    * This implementation is for iterating over Fixed Arrays of urls in the BrowseHistory
     *
     * We create this as an inner class because:
     *   1. The ListIterator is part of the BrowseHistory implementation
     *   2. It gives us access to the members of the BrowseHistory class even though they are private
+    *
+    * A key benefit of using this pattern is that if we wanted to change the type of collection for the URLs in this browse history class
+    * the only breaking changes will be here in the BrowseHistory class. The main method will not be broken since it has been programmed to the Iterator interface.
+    *
+    * For example, changing the urls collection to an ArrayList<String> instead of a String[] will not cause breaking changes outside of this class!
+    * If we did not use the Iterator pattern, we would have to find everywhere in our application where we are iterating over the BrowseHistory and change it.
+    *
     * */
-    public class ListIterator implements Iterator<String> {
+    public class ArrayIterator implements Iterator<String> {
 
         private BrowseHistory history;
         private int index;
 
-        public ListIterator(BrowseHistory history) {
+        public ArrayIterator(BrowseHistory history) {
             this.history = history;
         }
 
@@ -43,12 +48,12 @@ public class BrowseHistory {
         public boolean hasNext() {
             // If the current index is less than the total number of indexes in the list we're iterating over -> we have more items to visit
             // We have access to the urls property of the BrowseHistory class because we created this ListIterator as an inner class of the BrowseHistory class
-            return (index < history.urls.size());
+            return (index < history.count);
         }
 
         @Override
         public String current() {
-            return history.urls.get(index);
+            return history.urls[index];
         }
 
         @Override
