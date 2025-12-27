@@ -2,6 +2,7 @@ package memento;
 
 public class Demo {
     public static void show(){
+        System.out.println("============== MEMENTO PATTERN DEMO =================");
         var editor = new Editor();
         var history = new History();
 

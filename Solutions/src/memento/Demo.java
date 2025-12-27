@@ -2,6 +2,7 @@ package memento;
 
 public class Demo {
     public static void show(){
+        System.out.println("============== MEMENTO PATTERN SOLUTION =================");
         var doc = new Document();
         var history = new DocumentHistory();
         history.push(doc.createMemento());
