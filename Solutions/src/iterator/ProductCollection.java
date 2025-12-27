@@ -1,42 +1,26 @@
 package iterator;
 
+//import java.util.ArrayList;
+//import java.util.List;
+
 import java.util.ArrayList;
 import java.util.List;
 
+// Concrete Aggregate
 public class ProductCollection {
   private List<Product> products = new ArrayList<>();
+//    private Product[] products = new Product[10];
+//    private int count;
 
   public Iterator<Product> createIterator() {
-      return new ListIterator(this);
+      return new ProductListIterator(products);
+//      return new ProductArrayIterator(products);
   }
 
   public void add(Product product) {
-    products.add(product);
-  }
-
-  public class ListIterator implements Iterator<Product> {
-
-      private ProductCollection collection;
-      private int index;
-
-      public ListIterator(ProductCollection collection) {
-          this.collection = collection;
-      }
-
-      @Override
-      public boolean hasNext() {
-          return (index < collection.products.size());
-      }
-
-      @Override
-      public Product current() {
-          return collection.products.get(index);
-      }
-
-      @Override
-      public void next() {
-          index++;
-      }
+      products.add(product);
+//    products[count] = product;
+//    count++;
   }
 
 }
