@@ -1,7 +1,8 @@
 //import memento.Demo;
 //import state.Demo;
 //import iterator.Demo;
-import strategy.Demo;
+//import strategy.Demo;
+import template.Demo;
 
 public class Main {
     public static void main(String[] args) {
