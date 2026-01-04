@@ -2,7 +2,8 @@
 //import state.Demo;
 //import iterator.Demo;
 //import strategy.Demo;
-import template.Demo;
+//import template.Demo;
+import command.Demo;
 
 public class Main {
     public static void main(String[] args) {
