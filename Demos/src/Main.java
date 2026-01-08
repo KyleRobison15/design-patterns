@@ -4,7 +4,8 @@
 //import iterator.Demo;
 //import strategy.Demo;
 //import template.Demo;
-import command.Demo;
+//import command.Demo;
+import observer.Demo;
 
 public class Main {
     public static void main(String[] args) {
